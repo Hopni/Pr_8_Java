@@ -1,8 +1,8 @@
 package com.company;
 
-public class BinaryTree {
+public class BinaryTree<T extends Comparable<T>> {
     class Node {
-        public int value;
+        public T value;
         public Node left;
         public Node right;
 
@@ -11,7 +11,7 @@ public class BinaryTree {
             this.right = null;
         }
 
-        public Node(int val) {
+        public Node(T val) {
             this.value = val;
             this.left = null;
             this.right = null;
@@ -24,20 +24,20 @@ public class BinaryTree {
         this.root = null;
     }
 
-    private Node createNode(int val) {
+    private Node createNode(T val) {
         return new Node(val);
     }
 
-    public void add(int val) {
+    public void add(T val) {
         if (this.root == null) {
             this.root = new Node(val);
         } else {
             Node buff = this.root;
             while (true) {
-                if (buff.value == val) {
+                if (buff.value.compareTo(val) == 0) {
                     return;
                 }
-                if (buff.value > val) {
+                if (buff.value.compareTo(val) > 0) {
                     if (buff.left == null) {
                         buff.left = this.createNode(val);
                         break;
@@ -56,8 +56,8 @@ public class BinaryTree {
         }
     }
 
-    public void remove(int val) {
-        if (this.root.value == val) {
+    public void remove(T val) {
+        if (this.root.value.compareTo(val) == 0) {
             if (this.root.right != null) {
                 Node buffLeftBranch = root.left;
                 root = root.right;
@@ -76,8 +76,8 @@ public class BinaryTree {
         }
         Node buff = this.root;
         while (buff != null) {
-            if (buff.value > val) {
-                if (buff.left != null && buff.left.value == val) {
+            if (buff.value.compareTo(val) > 0) {
+                if (buff.left != null && (buff.left.value.compareTo(val) == 0)) {
                     if (buff.left.right != null) {
                         Node buffLeftBranch = buff.left.left;
                         buff.left = buff.left.right;
@@ -95,7 +95,7 @@ public class BinaryTree {
                     buff = buff.left;
                 }
             } else {
-                if (buff.right != null && buff.right.value == val) {
+                if (buff.right != null && (buff.right.value.compareTo(val) == 0)) {
                     if (buff.right.right != null) {
                         Node buffLeftBranch = buff.right.left;
                         buff.right = buff.right.right;
@@ -116,20 +116,20 @@ public class BinaryTree {
         }
     }
 
-    public boolean contains(int val) {
-        if (this.root.value == val) {
+    public boolean contains(T val) {
+        if (this.root.value.compareTo(val) == 0) {
             return true;
         } else {
             Node buff = this.root;
             while (buff != null) {
-                if (buff.value > val) {
-                    if (buff.left != null && buff.left.value == val) {
+                if (buff.value.compareTo(val) > 0) {
+                    if (buff.left != null && (buff.left.value.compareTo(val) == 0)) {
                         return true;
                     } else {
                         buff = buff.left;
                     }
                 } else {
-                    if (buff.right != null && buff.right.value == val) {
+                    if (buff.right != null && (buff.right.value.compareTo(val) == 0)) {
                         return true;
                     } else {
                         buff = buff.right;
@@ -141,7 +141,7 @@ public class BinaryTree {
     }
 
     private void traversalPrefix(Node top) {
-        System.out.print(top.value + " ");
+        System.out.print(top.value.toString() + " ");
         if (top.left != null) {
             this.traversalPrefix(top.left);
         }
@@ -164,7 +164,7 @@ public class BinaryTree {
         if (top.right != null) {
             this.traversalPostfix(top.right);
         }
-        System.out.print(top.value + " ");
+        System.out.print(top.value.toString() + " ");
     }
 
     public void traversalPostfix() {
@@ -178,11 +178,11 @@ public class BinaryTree {
             this.traversalInfix(top.left);
         }
         if (top.right != null) {
-            System.out.print(top.value + " ");
+            System.out.print(top.value.toString() + " ");
             this.traversalInfix(top.right);
             return;
         }
-        System.out.print(top.value + " ");
+        System.out.print(top.value.toString() + " ");
     }
 
     public void traversalInfix() {
