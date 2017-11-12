@@ -2,9 +2,9 @@ package com.company;
 
 public class BinaryTree<T extends Comparable<T>> {
     class Node {
-        public T value;
-        public Node left;
-        public Node right;
+         T value;
+         Node left;
+         Node right;
 
         public Node() {
             this.left = null;
@@ -57,61 +57,71 @@ public class BinaryTree<T extends Comparable<T>> {
     }
 
     public void remove(T val) {
-        if (this.root.value.compareTo(val) == 0) {
-            if (this.root.right != null) {
-                Node buffLeftBranch = root.left;
-                root = root.right;
-                if (buffLeftBranch != null) {
-                    Node buff = root;
-                    while (buff.left != null) {
-                        buff = buff.left;
+        Node buffNode = this.root;
+        if(this.root.value.compareTo(val) == 0){
+            if (buffNode.right != null){
+                Node newNode = buffNode.right;
+                Node buff = buffNode.right.right;
+                Node buffLeft = buffNode.left;
+                if(newNode.left != null) {
+                    while (newNode.left.left != null){
+                        newNode = newNode.left;
                     }
-                    buff.left = buffLeftBranch;
+                    newNode.left.left = buffNode.left;
+                    this.root = newNode.left;
+                    newNode.left = newNode.left.right;
+                    this.root.right = newNode;
+                    return;
+                } else {
+                    buffNode.left = buffNode.left.right;
+                    buffNode.left.right = buffLeft;
+                    return;
                 }
-                return;
-            } else {
-                this.root = this.root.left;
-                return;
             }
         }
-        Node buff = this.root;
-        while (buff != null) {
-            if (buff.value.compareTo(val) > 0) {
-                if (buff.left != null && (buff.left.value.compareTo(val) == 0)) {
-                    if (buff.left.right != null) {
-                        Node buffLeftBranch = buff.left.left;
-                        buff.left = buff.left.right;
-                        Node newLeftBranch = buff.left;
-                        while (newLeftBranch.left != null) {
-                            newLeftBranch = newLeftBranch.left;
-                        }
-                        newLeftBranch.left = buffLeftBranch;
-                        return;
-                    } else {
-                        buff.left = buff.left.left;
-                        return;
+        while (buffNode != null){
+            if(buffNode.left != null && buffNode.left.value.compareTo(val) == 0){
+                Node newNode = buffNode.left.right;
+                Node buff = buffNode.left.right;
+                Node buffLeft = buffNode.left.left;
+                if(newNode.left != null) {
+                    while (newNode.left.left != null){
+                        newNode = newNode.left;
                     }
+                    newNode.left.left = buffNode.left.left;
+                    buffNode.left = newNode.left;
+                    newNode.left = newNode.left.right;
+                    buffNode.left.right = buff;
+                    return;
                 } else {
-                    buff = buff.left;
+                    buffNode.left = buffNode.left.right;
+                    buffNode.left.left = buffLeft;
+                    return;
                 }
+            }
+            if (buffNode.right != null && buffNode.right.value.compareTo(val) == 0){
+                Node newNode = buffNode.right.right;
+                Node buff = buffNode.right.right;
+                Node buffLeft = buffNode.right.left;
+                if(newNode.left != null) {
+                    while (newNode.left.left != null){
+                        newNode = newNode.left;
+                    }
+                    newNode.left.left = buffNode.right.left;
+                    buffNode.right = newNode.left;
+                    newNode.left = newNode.left.right;
+                    buffNode.right.right = buff;
+                    return;
+                } else {
+                    buffNode.left = buffNode.left.right;
+                    buffNode.left.right = buffLeft;
+                    return;
+                }
+            }
+            if (buffNode.value.compareTo(val) > 0){
+                buffNode = buffNode.left;
             } else {
-                if (buff.right != null && (buff.right.value.compareTo(val) == 0)) {
-                    if (buff.right.right != null) {
-                        Node buffLeftBranch = buff.right.left;
-                        buff.right = buff.right.right;
-                        Node newLeftBranch = buff.right.left;
-                        while (newLeftBranch.left != null) {
-                            newLeftBranch = newLeftBranch.left;
-                        }
-                        newLeftBranch.left = buffLeftBranch;
-                        return;
-                    } else {
-                        buff.right = buff.right.left;
-                        return;
-                    }
-                } else {
-                    buff = buff.right;
-                }
+                buffNode = buffNode.right;
             }
         }
     }
